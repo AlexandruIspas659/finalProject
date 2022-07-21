@@ -6,8 +6,8 @@ import ro.sda.javaro35.finalProject.entities.job.Job;
 @Component
 public class JobMapper {
 
-    public JobResponse toDto(Job job) {
-        JobResponse dto = new JobResponse();
+    public JobDto toDto(Job job) {
+        JobDto dto = new JobDto();
         dto.setId(job.getId());
         dto.setTitle(job.getTitle());
         dto.setDescription(job.getDescription());
@@ -16,8 +16,13 @@ public class JobMapper {
         return dto;
     }
 
-    /*public Job toEntity(JobRequest jobRequest) {
+    public Job toEntity(JobDto jobDto) {
         Job job = new Job();
-        job.setTitle(jobRequest.getTitle());
-    }*/
+        job.setTitle(jobDto.getTitle());
+        job.setDescription(jobDto.getDescription());
+        job.setCategory(jobDto.getCategory());
+        job.setSalary(jobDto.getSalary());
+        return job;
+    }
+
 }

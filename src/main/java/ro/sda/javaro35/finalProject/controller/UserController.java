@@ -23,25 +23,22 @@ public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final SpringUserService SpringUserService;
+    private final SpringUserService springUserService;
 
     @Autowired
-    public UserController(SpringUserService SpringUserService) {
-        this.SpringUserService = SpringUserService;
+    public UserController(SpringUserService springUserService) {
+        this.springUserService = springUserService;
     }
 
     // http://localhost:8080/users
-
     // map url to controller method
-
 
     @GetMapping("/admin/users")
     public String showUsersPage(Model model) {
         // return a html page with users
         // add list of users
-        List<User> users = SpringUserService.findAll();
+        List<User> users = springUserService.findAll();
         model.addAttribute("usersInView", users);
-
         // resolved by the view resolver
         return "users-list";
     }
@@ -55,31 +52,31 @@ public class UserController {
 
     @PostMapping("/admin/users/add")
     public String add(@ModelAttribute User user) {
-        SpringUserService.save(user);
+        springUserService.save(user);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/users/{id}/edit")
     public String showEditForm(Model model, @PathVariable Long id) {
-        model.addAttribute("user", SpringUserService.findById(id));
+        model.addAttribute("user", springUserService.findById(id));
         return "user-edit";
     }
 
     public ModelAndView showEditForm2(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("user-edit");
-        modelAndView.addObject("user", SpringUserService.findById(id));
+        modelAndView.addObject("user", springUserService.findById(id));
         return modelAndView;
     }
 
     @PostMapping("/admin/users/{id}/edit")
     public String edit(@PathVariable Long id, @ModelAttribute UserDto userData) {
-        SpringUserService.update(id, userData);
+        springUserService.update(id, userData);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/users/{id}/delete")
     public String delete(@PathVariable long id) {
-        SpringUserService.delete(id);
+        springUserService.delete(id);
         return "redirect:/admin/users";
     }
 }

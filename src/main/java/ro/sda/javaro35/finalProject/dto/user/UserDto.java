@@ -20,5 +20,4 @@ public class UserDto {
     String roles;
     Preferences preferences;
 
-
 }

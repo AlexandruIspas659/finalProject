@@ -64,8 +64,7 @@ public class SpringUserService implements UserDetailsService {
 
     public User findById(Long id) {
         log.info("finding by id");
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("user not found"));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
     }
     // update
 

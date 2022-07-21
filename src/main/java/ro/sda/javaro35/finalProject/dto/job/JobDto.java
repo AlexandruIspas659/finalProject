@@ -10,8 +10,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 @Setter
 @FieldDefaults(level = PRIVATE)
-public class JobRequest {
+public class JobDto {
 
+    Long id;
     String title;
     String description;
     Categories category;
