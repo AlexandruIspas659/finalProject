@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/", "/index", "/menu/**", "/register", "/login").permitAll()
                 .antMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/login**").permitAll()
+                .antMatchers("/style**").permitAll()
 
                 .antMatchers("/admin/**", "/products/**", "/product-categories/**").hasAnyRole("ADMIN")
                 .antMatchers("/users/**").hasAnyRole("USER", "ADMIN")
@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/shoppingCart/**").permitAll()
                 .anyRequest().authenticated();
         // custom form (nice to have)
-        http.formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/");
+        http.formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/").successForwardUrl("/");
         // custom logout
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
