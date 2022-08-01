@@ -17,5 +17,6 @@ public class JobDto {
     String description;
     Categories category;
     String salary;
+    String image;
 
 }

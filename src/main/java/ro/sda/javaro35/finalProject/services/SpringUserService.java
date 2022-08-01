@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.sda.javaro35.finalProject.dto.user.UserDto;
+import ro.sda.javaro35.finalProject.dto.user.UserMapper;
 import ro.sda.javaro35.finalProject.entities.user.User;
-import ro.sda.javaro35.finalProject.exceptions.ResourceAlreadyExistsException;
 import ro.sda.javaro35.finalProject.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ public class SpringUserService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(SpringUserService.class);
 
+    private UserMapper userMapper;
     @Autowired
     private UserRepository userRepository;
 
@@ -45,14 +46,14 @@ public class SpringUserService implements UserDetailsService {
 
     // create
 
-    public void save(User user) {
-        log.info("saving user {}", user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getRoles() == null) {
-            user.setRoles("USER");
+    public void save(UserDto userDto) {
+        log.info("saving user {}", userDto.getUsername());
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userDto.getRoles() == null) {
+            userDto.setRoles("USER");
         }
-
-        userRepository.save(user);
+        User userEntity = userMapper.toEntity(userDto);
+        userRepository.save(userEntity);
     }
     // find all
 
@@ -62,9 +63,10 @@ public class SpringUserService implements UserDetailsService {
     }
     // find by id
 
-    public User findById(Long id) {
+    public UserDto findById(Long id) {
         log.info("finding by id");
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+        User userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+        return userMapper.toDto(userEntity);
     }
     // update
 
@@ -86,20 +88,6 @@ public class SpringUserService implements UserDetailsService {
         existingUser.setThumbnail(userData.getThumbnail());
         return existingUser;
     }
-
-    public void updateNew(User user) {
-        log.info("update user {}", user);
-
-        String name = user.getUsername();
-        userRepository.findByUsernameIgnoreCase(name)
-                .filter(existingUser -> existingUser.getId().equals(user.getId()))
-                .map(existingUser -> userRepository.save(user))
-                .orElseThrow(() -> {
-                    log.error("user with name {} already exists", name);
-                    throw new ResourceAlreadyExistsException("user with name " + name + " already exists");
-                });
-    }
-    // delete
 
     @Transactional
     public void delete(Long id) {

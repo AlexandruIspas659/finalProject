@@ -51,8 +51,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/users/add")
-    public String add(@ModelAttribute User user) {
-        springUserService.save(user);
+    public String add(@ModelAttribute UserDto userDto) {
+        springUserService.save(userDto);
         return "redirect:/admin/users";
     }
 

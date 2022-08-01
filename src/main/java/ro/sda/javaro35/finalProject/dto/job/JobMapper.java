@@ -13,6 +13,9 @@ public class JobMapper {
         dto.setDescription(job.getDescription());
         dto.setCategory(job.getCategory());
         dto.setSalary(job.getSalary());
+        if (job.getImage() != null) {
+            dto.setImage(job.getImage());
+        }
         return dto;
     }
 
@@ -22,6 +25,9 @@ public class JobMapper {
         job.setDescription(jobDto.getDescription());
         job.setCategory(jobDto.getCategory());
         job.setSalary(jobDto.getSalary());
+        if (jobDto.getImage() != null) {
+            job.setImage(jobDto.getImage());
+        }
         return job;
     }
 

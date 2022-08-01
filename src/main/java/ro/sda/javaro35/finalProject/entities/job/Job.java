@@ -31,4 +31,7 @@ public class Job {
 
     @Column(nullable = false)
     String salary;
+
+    @Lob
+    String image;
 }

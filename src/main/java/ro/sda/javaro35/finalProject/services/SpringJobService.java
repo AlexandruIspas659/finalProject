@@ -1,11 +1,13 @@
 package ro.sda.javaro35.finalProject.services;
 
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.sda.javaro35.finalProject.dto.job.JobDto;
+import ro.sda.javaro35.finalProject.dto.job.JobMapper;
 import ro.sda.javaro35.finalProject.entities.job.Categories;
 import ro.sda.javaro35.finalProject.entities.job.Job;
 import ro.sda.javaro35.finalProject.repository.JobRepository;
@@ -13,20 +15,19 @@ import ro.sda.javaro35.finalProject.repository.JobRepository;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class SpringJobService {
 
     private static final Logger log = LoggerFactory.getLogger(SpringJobService.class);
 
     private JobRepository jobRepository;
 
-    @Autowired
-    public SpringJobService(JobRepository jobRepository) {
-        this.jobRepository = jobRepository;
-    }
+    private JobMapper jobMapper;
 
-    public void save(Job job) {
-        log.info("saving job {}", job.getTitle());
-        jobRepository.save(job);
+    public void save(JobDto jobDto) {
+        log.info("saving job {}", jobDto.getTitle());
+        Job jobEntity = jobMapper.toEntity(jobDto);
+        jobRepository.save(jobEntity);
     }
 
     public List<Job> findAll() {
@@ -58,6 +59,7 @@ public class SpringJobService {
         existingJob.setDescription(jobDto.getDescription());
         existingJob.setCategory(jobDto.getCategory());
         existingJob.setSalary(jobDto.getSalary());
+        existingJob.setImage(jobDto.getImage());
         return existingJob;
     }
 

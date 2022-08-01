@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jobs Page</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css} "/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navBar"/>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="btn-group dropright">
+                <button type="button" class="btn btn-secondary">
+                    Split dropright
+                </button>
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropright</span>
+                </button>
+                <div class="dropdown-menu">
+                    <!-- Dropdown menu links -->
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="btn">
+                <a class="btn btn-primary" th:href="@{/jobs/add}" sec:authorize="hasRole('ADMIN')" id="addJob">Add Job</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card-columns">
+        <div class="card" th:each="job : ${jobsInView}">
+            <img class="card-img-top" th:src="*{'data:image/jpeg;base64, ' + job.image}" alt="Job Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${job.title}"></h5>
+                <h3 class="card-text" th:text="${job.category}"></h3>
+                <p class="card-text" th:text="${job.description}"></p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted" th:text="${job.salary}"></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
