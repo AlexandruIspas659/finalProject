@@ -23,6 +23,7 @@ public class SpringUserService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(SpringUserService.class);
 
+    @Autowired
     private UserMapper userMapper;
     @Autowired
     private UserRepository userRepository;
@@ -70,23 +71,10 @@ public class SpringUserService implements UserDetailsService {
     }
     // update
 
-    public void update(Long userId, UserDto userData) {
-        log.info("update user {}", userData);
-
+    public void update(Long userId, UserDto userDto) {
+        log.info("update user {}", userDto);
         userRepository.findById(userId)
-                .map(existingUser -> updateEntity(userData, existingUser))
-                .map(updatedUser -> userRepository.save(updatedUser))
                 .orElseThrow(() -> new RuntimeException("user not found"));
-    }
-
-    private User updateEntity(UserDto userData, User existingUser) {
-        existingUser.setUsername(userData.getUsername());
-        existingUser.setEmail(userData.getEmail());
-        existingUser.setPassword(passwordEncoder.encode(userData.getPassword()));
-        existingUser.setRoles(userData.getRoles());
-        existingUser.setPreferences(userData.getPreferences());
-        existingUser.setThumbnail(userData.getThumbnail());
-        return existingUser;
     }
 
     @Transactional

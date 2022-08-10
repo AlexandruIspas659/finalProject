@@ -35,9 +35,10 @@ public class SpringJobService {
         return jobRepository.findAll();
     }
 
-    public Job findById(Long id) {
+    public JobDto findById(Long id) {
         log.info("finding by id");
-        return jobRepository.findById(id).orElseThrow(() -> new RuntimeException("job not found"));
+        Job jobEntity = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("job not found"));
+        return jobMapper.toDto(jobEntity);
     }
 
     public List<Job> findAllByCategory(String category) {
@@ -49,18 +50,8 @@ public class SpringJobService {
     public void update(Long jobId, JobDto jobDto) {
         log.info("update job {}", jobDto);
         jobRepository.findById(jobId)
-                .map(existingJob -> updateEntity(jobDto, existingJob))
-                .map(updatedJob -> jobRepository.save(updatedJob))
-                .orElseThrow(() -> new RuntimeException("job not found"));
-    }
-
-    public Job updateEntity(JobDto jobDto, Job existingJob) {
-        existingJob.setTitle(jobDto.getTitle());
-        existingJob.setDescription(jobDto.getDescription());
-        existingJob.setCategory(jobDto.getCategory());
-        existingJob.setSalary(jobDto.getSalary());
-        existingJob.setImage(jobDto.getImage());
-        return existingJob;
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+        save(jobDto);
     }
 
     @Transactional

@@ -42,7 +42,6 @@ public class JobController {
 
     @PostMapping("/jobs/add")
     public String add(@RequestParam("file") MultipartFile file, @ModelAttribute JobDto jobDto) {
-
         if (!file.isEmpty()) {
             jobDto.setImage(ImageUtil.resizeAndCrop(file, 300, 175));
         }
@@ -58,9 +57,8 @@ public class JobController {
 
     @PostMapping("/jobs/{id}/edit")
     public String edit(@PathVariable Long id, @RequestParam("file") MultipartFile file, @ModelAttribute JobDto jobDto) {
-        Job job = jobMapper.toEntity(jobDto);
         if (!file.isEmpty()) {
-            job.setImage(ImageUtil.resizeAndCrop(file, 300, 175));
+            jobDto.setImage(ImageUtil.resizeAndCrop(file, 300, 175));
         }
         springJobService.update(id, jobDto);
         return "redirect:/jobs";

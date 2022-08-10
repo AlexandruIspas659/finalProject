@@ -28,6 +28,7 @@ public class User {
     @Column(nullable = false)
     String password;
 
+    @Lob
     String thumbnail;
 
     // ADMIN, USER, VISITOR

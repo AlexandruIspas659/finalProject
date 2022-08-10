@@ -9,27 +9,22 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css} "/>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.1.2/css/all.css}">
 </head>
 <body>
 <div th:replace="fragments/nav-bar :: navBar"/>
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary">
-                    Split dropright
-                </button>
-                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <span class="sr-only">Toggle Dropright</span>
-                </button>
-                <div class="dropdown-menu">
-                    <!-- Dropdown menu links -->
-                </div>
+        <div class="col-sm">
+            <div class="input-group rounded btn">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+                </span>
             </div>
         </div>
-        <div class="col">
+        <div class="col-sm">
             <div class="btn">
                 <a class="btn btn-primary" th:href="@{/jobs/add}" sec:authorize="hasRole('ADMIN')" id="addJob">Add Job</a>
             </div>

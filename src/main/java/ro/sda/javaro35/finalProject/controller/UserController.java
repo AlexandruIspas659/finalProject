@@ -6,14 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ro.sda.javaro35.finalProject.dto.user.UserDto;
 import ro.sda.javaro35.finalProject.entities.user.User;
 import ro.sda.javaro35.finalProject.services.SpringUserService;
+import ro.sda.javaro35.finalProject.utils.ImageUtil;
 
 import java.util.List;
 
@@ -51,7 +50,10 @@ public class UserController {
     }
 
     @PostMapping("/admin/users/add")
-    public String add(@ModelAttribute UserDto userDto) {
+    public String add(@RequestParam("file") MultipartFile thumbnail, @ModelAttribute UserDto userDto) {
+        if (!thumbnail.isEmpty()) {
+            userDto.setThumbnail(ImageUtil.resizeAndCrop(thumbnail, 300, 175));
+        }
         springUserService.save(userDto);
         return "redirect:/admin/users";
     }
@@ -62,15 +64,12 @@ public class UserController {
         return "user-edit";
     }
 
-    public ModelAndView showEditForm2(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("user-edit");
-        modelAndView.addObject("user", springUserService.findById(id));
-        return modelAndView;
-    }
-
     @PostMapping("/admin/users/{id}/edit")
-    public String edit(@PathVariable Long id, @ModelAttribute UserDto userData) {
-        springUserService.update(id, userData);
+    public String edit(@PathVariable Long id, @RequestParam("file") MultipartFile thumbnail, @ModelAttribute UserDto userDto) {
+        if (!thumbnail.isEmpty()) {
+            userDto.setThumbnail(ImageUtil.resizeAndCrop(thumbnail, 300, 175));
+        }
+        springUserService.update(id, userDto);
         return "redirect:/admin/users";
     }
 

@@ -1,10 +1,19 @@
 package ro.sda.javaro35.finalProject.dto.job;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import ro.sda.javaro35.finalProject.entities.job.Job;
+import ro.sda.javaro35.finalProject.repository.JobRepository;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Component
+@FieldDefaults(level = PRIVATE)
 public class JobMapper {
+
+    JobRepository jobRepository;
 
     public JobDto toDto(Job job) {
         JobDto dto = new JobDto();
@@ -21,6 +30,9 @@ public class JobMapper {
 
     public Job toEntity(JobDto jobDto) {
         Job job = new Job();
+        if (jobDto.getId() != null) {
+            job = jobRepository.findById(jobDto.getId()).orElse(job);
+        }
         job.setTitle(jobDto.getTitle());
         job.setDescription(jobDto.getDescription());
         job.setCategory(jobDto.getCategory());
