@@ -1,1 +1,3 @@
 # finalProject
+This is a web application built with Java using Spring Boot, for the database i've used MySql and for the frontend i opted for Thymeleaf.
+Spring Boot powers the backend with a robust and scalable architecture, while MySQL ensures efficient relational data management. Thymeleaf, integrated with Spring Boot, enables server-side rendering of dynamic HTML pages, offering a smooth and responsive user experience without relying on complex frontend frameworks. This stack is ideal for enterprise applications, content management systems, and business dashboards with enhanced security and maintainability.
